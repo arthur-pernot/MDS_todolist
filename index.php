@@ -15,7 +15,7 @@ function parseTasksFile(string $filename): array {
     foreach ($lines as $line) {
         $parts = explode('|', $line);
 
-        if (count($parts) !== 5) {
+        if (count($parts) !== 6) {
             continue;
         }
 
@@ -24,13 +24,15 @@ function parseTasksFile(string $filename): array {
         $desc = $parts[2];
         $state = $parts[3];
         $date = $parts[4];
+        $priority = (int)$parts[5];
 
         array_push($tasks, [
             'id' => $id,
             'title' => $title,
             'desc' => $desc,
             'state' => $state,
-            'date' => $date
+            'date' => $date,
+            'priority' => $priority
         ]);
     }
 
@@ -66,8 +68,10 @@ $tasks = parseTasksFile('tasks.txt');
             margin-bottom: 1rem;
         }
 
-        .task.completed { border-left-color: #28a745; }
-        .task.pending { border-left-color: #6c757d; }
+        .task.priority-3 { border-left-color: #ef4444; }
+        .task.priority-2 { border-left-color: #f59e0b; }
+        .task.priority-1 { border-left-color: #3b82f6; }
+        .task.priority-0 { border-left-color: #9ca3af; }
 
         .task-header {
             display: flex;
@@ -127,7 +131,7 @@ $tasks = parseTasksFile('tasks.txt');
 
 
     <?php foreach ($tasks as $task): ?>
-        <div class="task <?= $task['state'] ?>">
+        <div class="task priority-<?= $task['priority'] ?>">
             <div class="task-header">
                 <span class="task-title"><?= $task['title'] ?></span>
                 <span class="task-id">#<?= $task['id'] ?></span>
