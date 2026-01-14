@@ -1,0 +1,8 @@
+1|Buy groceries|Pick up milk, eggs, bread and vegetables from the store|pending|2026-01-15
+2|Finish project report|Complete the quarterly analysis and send to management|completed|2026-01-14
+3|Call dentist|Schedule annual checkup appointment|completed|2026-01-10
+4|Update resume|Add recent projects and skills to CV|pending|2026-01-20
+5|Pay electricity bill|Monthly utility payment due|completed|2026-01-13
+6|Read new book|Start reading "The Midnight Library"|pending|2026-01-25
+7|Gym session|Leg day workout routine|completed|2026-01-12
+8|Team meeting|Weekly standup with development team|completed|2026-01-13
