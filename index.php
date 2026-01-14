@@ -118,6 +118,25 @@ if ($hideCompleted) {
         return $task['state'] !== 'completed';
     });
 }
+
+// Check if "sort by date" is active (from URL parameter)
+// When the checkbox is checked, the form submits ?sort_by_date=1
+$sortByDate = isset($_GET['sort_by_date']) && $_GET['sort_by_date'] === '1';
+
+// Sort tasks by date if the sort button was clicked
+if ($sortByDate) {
+    // Bubble sort: compare pairs and swap if out of order
+    for ($i = 0; $i < count($tasks); $i++) {
+        for ($j = $i + 1; $j < count($tasks); $j++) {
+            // If task[i] has a later date than task[j], swap them
+            if ($tasks[$i]['date'] > $tasks[$j]['date']) {
+                $temp = $tasks[$i];
+                $tasks[$i] = $tasks[$j];
+                $tasks[$j] = $temp;
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -231,6 +250,21 @@ if ($hideCompleted) {
                 onchange="this.form.submit()"
             >
             Hide completed tasks
+        </label>
+    </form>
+
+    <!-- Sort by date checkbox -->
+    <!-- Uses GET method so the sort state is preserved in the URL -->
+    <form method="GET" style="margin-bottom: 1rem;">
+        <label style="cursor: pointer;">
+            <input
+                type="checkbox"
+                name="sort_by_date"
+                value="1"
+                <?= $sortByDate ? 'checked' : '' ?>
+                onchange="this.form.submit()"
+            >
+            Sort by date
         </label>
     </form>
 
