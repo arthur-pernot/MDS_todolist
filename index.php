@@ -28,7 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     // This sends an HTTP 302 redirect header to the browser, telling it
     // to make a new GET request to the same URL. This prevents the browser
     // from re-submitting the form if the user refreshes the page.
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    // Preserve query string (e.g. ?hide_completed=1) so filters stay active
+    $query = $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '';
+    header('Location: ' . $_SERVER['PHP_SELF'] . $query);
     exit;  // Stop script execution - the browser will reload the page
 }
 
@@ -61,7 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['title'])) {
     file_put_contents('tasks.txt', $newLine, FILE_APPEND);
 
     // Redirect to prevent form resubmission on refresh
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    // Preserve query string so filters stay active
+    $query = $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '';
+    header('Location: ' . $_SERVER['PHP_SELF'] . $query);
     exit;
 }
 
