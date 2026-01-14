@@ -3,6 +3,35 @@
  * Task List Parser and Viewer
  */
 
+// Handle POST request to delete a task
+// Check if this is a POST request AND has a delete_id field
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    // Get the ID of the task to delete from the form
+    $deleteId = $_POST['delete_id'];
+
+    // Read all lines from the tasks file
+    $lines = file('tasks.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    // Filter out the line with the matching ID
+    $newLines = [];
+    foreach ($lines as $line) {
+        $parts = explode('|', $line);
+        if ($parts[0] !== $deleteId) {
+            $newLines[] = $line;  // Keep lines that don't match
+        }
+    }
+
+    // Write the remaining lines back to the file
+    file_put_contents('tasks.txt', implode("\n", $newLines) . "\n");
+
+    // Redirect back to this same page (Post/Redirect/Get pattern)
+    // This sends an HTTP 302 redirect header to the browser, telling it
+    // to make a new GET request to the same URL. This prevents the browser
+    // from re-submitting the form if the user refreshes the page.
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;  // Stop script execution - the browser will reload the page
+}
+
 // Handle POST request to add a task
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['title'])) {
     // Read existing tasks to find the highest ID
@@ -147,6 +176,16 @@ $tasks = parseTasksFile('tasks.txt');
             color: #666;
         }
 
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.2rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+
         .empty {
             text-align: center;
             color: #888;
@@ -182,6 +221,10 @@ $tasks = parseTasksFile('tasks.txt');
                     <?= $task['state'] ?>
                 </span>
                 <span class="task-date"><?= $task['date'] ?></span>
+                <form method="POST" style="margin:0;">
+                    <input type="hidden" name="delete_id" value="<?= $task['id'] ?>">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
             </div>
         </div>
     <?php endforeach; ?>
