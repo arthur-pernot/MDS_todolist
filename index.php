@@ -102,6 +102,18 @@ function parseTasksFile(string $filename): array {
 }
 
 $tasks = parseTasksFile('tasks.txt');
+
+// Check if "hide completed" filter is active (from URL parameter)
+// When the checkbox is checked, the form submits ?hide_completed=1
+$hideCompleted = isset($_GET['hide_completed']) && $_GET['hide_completed'] === '1';
+
+// Filter tasks if "hide completed" is enabled
+if ($hideCompleted) {
+    // Keep only tasks where state is NOT "completed"
+    $tasks = array_filter($tasks, function($task) {
+        return $task['state'] !== 'completed';
+    });
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -196,13 +208,29 @@ $tasks = parseTasksFile('tasks.txt');
 <body>
     <h1>Task Manager</h1>
 
+    <!-- Form to add a new task -->
     <form method="POST" style="background: white; padding: 1rem; margin-bottom: 1.5rem; border: 1px solid #ddd;">
         <input type="text" name="title" placeholder="Task title" required style="padding: 0.5rem; width: 200px;">
         <input type="text" name="desc" placeholder="Description" style="padding: 0.5rem; width: 300px;">
         <button type="submit" style="padding: 0.5rem 1rem; cursor: pointer;">Add Task</button>
     </form>
 
-    <p><?= count($tasks) ?> tasks</p>
+    <!-- Filter: checkbox to hide completed tasks -->
+    <!-- Uses GET method so the filter state is preserved in the URL -->
+    <form method="GET" style="margin-bottom: 1rem;">
+        <label style="cursor: pointer;">
+            <input
+                type="checkbox"
+                name="hide_completed"
+                value="1"
+                <?= $hideCompleted ? 'checked' : '' ?>
+                onchange="this.form.submit()"
+            >
+            Hide completed tasks
+        </label>
+    </form>
+
+    <p><?= count($tasks) ?> task<?= count($tasks) !== 1 ? 's' : '' ?></p>
 
     <?php if (empty($tasks)): ?>
         <div class="empty">No tasks found in tasks.txt</div>
