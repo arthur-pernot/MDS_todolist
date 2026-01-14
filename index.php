@@ -3,6 +3,39 @@
  * Task List Parser and Viewer
  */
 
+// Handle POST request to add a task
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['title'])) {
+    // Read existing tasks to find the highest ID
+    $tasks = file('tasks.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lastId = 0;
+    foreach ($tasks as $line) {
+        $parts = explode('|', $line);
+        if (!empty($parts[0]) && is_numeric($parts[0])) {
+            $lastId = max($lastId, (int)$parts[0]);
+        }
+    }
+
+    // Generate new ID
+    $newId = $lastId + 1;
+
+    // Sanitize input: replace pipe characters to avoid breaking the format
+    $title = str_replace('|', '-', $_POST['title']);
+    $desc = str_replace('|', '-', $_POST['desc'] ?? '');
+
+    // Set today's date
+    $date = date('Y-m-d');
+
+    // Format: id|title|desc|state|date|priority
+    $newLine = "$newId|$title|$desc|pending|$date|1\n";
+
+    // Append the new task to the file
+    file_put_contents('tasks.txt', $newLine, FILE_APPEND);
+
+    // Redirect to prevent form resubmission on refresh
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
 function parseTasksFile(string $filename): array {
     $tasks = [];
 
@@ -123,6 +156,13 @@ $tasks = parseTasksFile('tasks.txt');
 </head>
 <body>
     <h1>Task Manager</h1>
+
+    <form method="POST" style="background: white; padding: 1rem; margin-bottom: 1.5rem; border: 1px solid #ddd;">
+        <input type="text" name="title" placeholder="Task title" required style="padding: 0.5rem; width: 200px;">
+        <input type="text" name="desc" placeholder="Description" style="padding: 0.5rem; width: 300px;">
+        <button type="submit" style="padding: 0.5rem 1rem; cursor: pointer;">Add Task</button>
+    </form>
+
     <p><?= count($tasks) ?> tasks</p>
 
     <?php if (empty($tasks)): ?>
