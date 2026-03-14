@@ -178,3 +178,161 @@ P _ _ D _
 - Choisir un thème de mots (animaux, pays, etc.)
 - Ignorer les majuscules/minuscules
 - Simplifier la gestion des accents
+
+# Jeu 3 — Machine à sous (Slot Machine)
+
+### Objectif
+
+Créer une **machine à sous simple** dans laquelle le joueur lance la machine et obtient trois symboles aléatoires.
+
+---
+
+## Version 1 — Jeu minimal
+
+### Features
+
+* Afficher un titre
+* Ajouter un bouton **Lancer**
+* Générer **3 symboles aléatoires** parmi une liste (ex : 🍒 ⭐ 🔔 🍋)
+* Afficher les trois symboles obtenus
+
+---
+
+## Version 2 — Résultat de la manche
+
+### Features
+
+* Vérifier si les trois symboles sont identiques
+* Afficher le résultat :
+
+  * **gagné**
+  * **perdu**
+* Mettre en évidence une victoire
+
+---
+
+## Version 3 — Ajouter des crédits
+
+### Features
+
+* Donner un nombre de **crédits au joueur**
+* Chaque lancer coûte **1 crédit**
+* Si le joueur gagne :
+
+  * ajouter des crédits
+* Stocker les crédits dans `$_SESSION`
+
+---
+
+## Version 4 — Historique
+
+### Features
+
+* Afficher les **manches précédentes**
+* Pour chaque manche afficher :
+
+  * les trois symboles
+  * le résultat
+* Stocker l’historique dans `$_SESSION`
+
+---
+
+## Version 5 — Interface améliorée
+
+### Features
+
+* Afficher les symboles sous forme de **cartes**
+* Mettre en évidence les victoires
+* Afficher clairement :
+
+  * crédits restants
+  * nombre de manches jouées
+
+---
+
+## Bonus
+
+* Ajouter **des gains différents selon les symboles**
+* Ajouter un **jackpot**
+* Ajouter une animation simple de tirage
+
+---
+
+# Jeu 4 — Morpion simplifié
+
+### Objectif
+
+Créer un **jeu du morpion (Tic Tac Toe)** jouable contre l’ordinateur.
+
+---
+
+## Version 1 — Grille minimale
+
+### Features
+
+* Afficher une **grille 3 × 3**
+* Chaque case est un bouton
+* Quand le joueur clique :
+
+  * placer un **X**
+* Empêcher de jouer dans une case déjà occupée
+
+---
+
+## Version 2 — Tour de l’ordinateur
+
+### Features
+
+* Après le joueur :
+
+  * l’ordinateur joue automatiquement
+* L’ordinateur choisit **une case libre au hasard**
+* Placer un **O**
+
+---
+
+## Version 3 — Vérification de victoire
+
+### Features
+
+* Vérifier si un joueur a gagné :
+
+  * ligne
+  * colonne
+  * diagonale
+* Afficher :
+
+  * victoire joueur
+  * victoire ordinateur
+  * égalité
+
+---
+
+## Version 4 — État de jeu
+
+### Features
+
+* Stocker la grille dans `$_SESSION`
+* Conserver l’état de la partie entre les requêtes
+* Bloquer les clics si la partie est terminée
+
+---
+
+## Version 5 — Nouvelle partie
+
+### Features
+
+* Ajouter un bouton **Rejouer**
+* Réinitialiser :
+
+  * la grille
+  * le résultat
+  * le tour de jeu
+
+---
+
+## Bonus
+
+* Afficher **qui doit jouer**
+* Ajouter un **score joueur / ordinateur**
+* Améliorer l’IA (bloquer une victoire possible)
